@@ -10880,7 +10880,7 @@ div.output_wrapper {
 /* class for the output area when it should be height-limited */
 div.output_scroll {
   /* ideally, this would be max-height, but FF barfs all over that */
-  height: 16em;
+  height: 24em;
   /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
   width: 100%;
   overflow: auto;

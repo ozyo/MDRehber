@@ -7,16 +7,33 @@
   <script src="https://unpkg.com/ngl"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      var stage = new NGL.Stage("viewport");
-      stage.viewer.setBackground( "#FFF" )
-      stage.loadFile( "cok_iyonize_protein.pdb", { defaultRepresentation: true}).then(function (o) {
-      o.addRepresentation("cartoon");
-      o.addRepresentation("surface", {sele:"SOL and not within 3 of protein", opacity:"0.3" ,color:"cyan"});
-      o.addRepresentation("ball+stick", {radius:"0.5",sele:"NA",color:"purple"});
-      o.addRepresentation("ball+stick", {radius:"0.5",sele:"CL",color:"green"});
-      o.autoView()});
-    });
-  </script>
-  <div id="viewport" style="width:900px; height:800px;"> </div>
+            stage = new NGL.Stage( "viewport");
+            stage.viewer.setBackground( "#FFF" )
+            stage.loadFile( "uretim.pdb", { asTrajectory: true } )
+            .then(function( o){
+                o.addRepresentation( "cartoon", { sele: "protein" } );
+                o.addTrajectory();
+                o.autoView();
+            } );
+            var togglePlayer = document.getElementById( "playerButton" );
+            var playing = false;
+            togglePlayer.addEventListener( "click", function(){
+                var trajComp = stage.getComponentsByName("uretim.pdb").list[0].trajList[0];
+                var player = new NGL.TrajectoryPlayer(trajComp.trajectory, {step: 1, timeout: 200});
+                if( !playing ){
+                    player.play();
+                    playing = true;
+                }else{
+                    player.play();
+                    player.pause();
+                    playing = false;
+                }
+            } );
+        } );
+    </script>
+    <div id="viewport" style="width:800px; height:500px;"></div>
+    <div style="width:100px;">
+        <button id="playerButton">Oynat/Durdur</button>
+    </div>
 </body>
 </html>
